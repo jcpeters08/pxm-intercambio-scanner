@@ -1,17 +1,26 @@
 {
-  "_comment": "Search configuration. Each query runs across each subreddit. Add/remove as desired.",
+  "_comment": "Search configuration. Each query runs across each subreddit. Edit freely and push — the next scan picks up changes.",
   "subreddits": [
     "PuertoEscondido",
     "mexico",
     "Oaxaca",
     "MexicoTravel",
+    "mexicoliving",
     "expats",
+    "ExpatFIRE",
+    "AmerExit",
     "IWantOut",
     "digitalnomad",
-    "Spanish",
-    "languagelearning",
     "solotravel",
-    "backpacking"
+    "backpacking",
+    "Spanish",
+    "Spanishlearning",
+    "learnspanish",
+    "languagelearning",
+    "languageexchange",
+    "dreamingspanish",
+    "RefoldSpanish",
+    "tandem"
   ],
   "queries": [
     "Puerto Escondido language exchange",
@@ -20,13 +29,17 @@
     "Puerto Escondido learn Spanish",
     "Puerto Escondido practice Spanish",
     "Puerto Escondido Spanish lessons",
-    "Puerto Escondido tutor",
+    "Puerto Escondido Spanish tutor",
+    "Puerto Escondido Spanish school",
+    "Puerto Escondido conversation partner",
     "Oaxaca language exchange"
   ],
   "site_wide_queries": [
     "\"Puerto Escondido\" \"language exchange\"",
     "\"Puerto Escondido\" intercambio Spanish",
-    "\"Puerto Escondido\" practice Spanish"
+    "\"Puerto Escondido\" practice Spanish",
+    "\"Puerto Escondido\" Spanish tutor",
+    "\"Puerto Escondido\" conversation partner"
   ],
   "keyword_filter": [
     "language exchange",
@@ -37,14 +50,20 @@
     "spanish lesson",
     "spanish tutor",
     "spanish school",
-    "conversation partner"
+    "conversation partner",
+    "learning spanish",
+    "improve my spanish",
+    "english exchange",
+    "practice english",
+    "learn english"
   ],
   "location_filter": [
     "puerto escondido",
     "pxm",
     "oaxaca coast",
     "zicatela",
-    "la punta"
+    "la punta",
+    "puerto esco"
   ],
   "max_age_days": 60
 }
