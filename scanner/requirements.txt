@@ -1,0 +1,2 @@
+# No external dependencies — reddit_scan.py uses Python stdlib only.
+# Kept as a placeholder so CI and contributors know this is intentional.

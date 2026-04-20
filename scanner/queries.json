@@ -1,0 +1,50 @@
+{
+  "_comment": "Search configuration. Each query runs across each subreddit. Add/remove as desired.",
+  "subreddits": [
+    "PuertoEscondido",
+    "mexico",
+    "Oaxaca",
+    "MexicoTravel",
+    "expats",
+    "IWantOut",
+    "digitalnomad",
+    "Spanish",
+    "languagelearning",
+    "solotravel",
+    "backpacking"
+  ],
+  "queries": [
+    "Puerto Escondido language exchange",
+    "Puerto Escondido intercambio",
+    "Puerto Escondido Spanish class",
+    "Puerto Escondido learn Spanish",
+    "Puerto Escondido practice Spanish",
+    "Puerto Escondido Spanish lessons",
+    "Puerto Escondido tutor",
+    "Oaxaca language exchange"
+  ],
+  "site_wide_queries": [
+    "\"Puerto Escondido\" \"language exchange\"",
+    "\"Puerto Escondido\" intercambio Spanish",
+    "\"Puerto Escondido\" practice Spanish"
+  ],
+  "keyword_filter": [
+    "language exchange",
+    "intercambio",
+    "practice spanish",
+    "learn spanish",
+    "spanish class",
+    "spanish lesson",
+    "spanish tutor",
+    "spanish school",
+    "conversation partner"
+  ],
+  "location_filter": [
+    "puerto escondido",
+    "pxm",
+    "oaxaca coast",
+    "zicatela",
+    "la punta"
+  ],
+  "max_age_days": 60
+}

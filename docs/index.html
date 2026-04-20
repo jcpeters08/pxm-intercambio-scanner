@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Intercambio PXM — Social Scanner</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #151b23;
+      --panel-2: #1c242e;
+      --border: #2a3340;
+      --text: #e6edf3;
+      --muted: #8b98a5;
+      --accent: #f59e0b;
+      --accent-dim: #78350f;
+      --ok: #22c55e;
+      --warn: #eab308;
+      --skip: #6b7280;
+      --reddit: #ff4500;
+      --facebook: #1877f2;
+      --instagram: #e1306c;
+      --tiktok: #69c9d0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0.3px;
+    }
+    header .subtitle { color: var(--muted); font-size: 13px; }
+    main { padding: 24px 32px; max-width: 1200px; margin: 0 auto; }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .kpi {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+    .kpi .value { font-size: 26px; font-weight: 600; margin-top: 4px; }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .chip {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chip.active { background: var(--accent); color: #111; border-color: var(--accent); font-weight: 600; }
+    .chip:hover:not(.active) { background: var(--panel-2); }
+    input[type="search"] {
+      flex: 1 1 200px;
+      min-width: 200px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      font: inherit;
+    }
+    .cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .card header {
+      padding: 0;
+      border: 0;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .badge.reddit { background: var(--reddit); color: #fff; }
+    .badge.facebook { background: var(--facebook); color: #fff; }
+    .badge.instagram { background: var(--instagram); color: #fff; }
+    .badge.tiktok { background: var(--tiktok); color: #111; }
+    .badge.status-new { background: var(--accent); color: #111; }
+    .badge.status-drafted { background: var(--warn); color: #111; }
+    .badge.status-replied { background: var(--ok); color: #fff; }
+    .badge.status-skipped { background: var(--skip); color: #fff; }
+    .card h2 { font-size: 16px; margin: 0 0 6px; }
+    .card h2 a { color: var(--text); text-decoration: none; }
+    .card h2 a:hover { color: var(--accent); text-decoration: underline; }
+    .meta { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+    .summary { color: var(--muted); font-size: 14px; white-space: pre-wrap; }
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    footer {
+      margin-top: 40px;
+      padding: 24px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+    code { background: var(--panel-2); padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Intercambio PXM — Social Scanner</h1>
+      <div class="subtitle">People asking about language exchange in Puerto Escondido</div>
+    </div>
+    <div class="subtitle" id="lastUpdated">—</div>
+  </header>
+
+  <main>
+    <section class="kpis">
+      <div class="kpi"><div class="label">Total</div><div class="value" id="kpiTotal">0</div></div>
+      <div class="kpi"><div class="label">New (7 days)</div><div class="value" id="kpiNew">0</div></div>
+      <div class="kpi"><div class="label">Drafted</div><div class="value" id="kpiDrafted">0</div></div>
+      <div class="kpi"><div class="label">Replied</div><div class="value" id="kpiReplied">0</div></div>
+      <div class="kpi"><div class="label">Reddit / FB / IG / TT</div><div class="value" id="kpiBreakdown">—</div></div>
+    </section>
+
+    <section class="filters" id="platformFilters">
+      <strong style="margin-right:4px;">Platform:</strong>
+      <span class="chip active" data-platform="all">All</span>
+      <span class="chip" data-platform="reddit">Reddit</span>
+      <span class="chip" data-platform="facebook">Facebook</span>
+      <span class="chip" data-platform="instagram">Instagram</span>
+      <span class="chip" data-platform="tiktok">TikTok</span>
+    </section>
+
+    <section class="filters" id="statusFilters">
+      <strong style="margin-right:4px;">Status:</strong>
+      <span class="chip active" data-status="all">All</span>
+      <span class="chip" data-status="new">New</span>
+      <span class="chip" data-status="drafted">Drafted</span>
+      <span class="chip" data-status="replied">Replied</span>
+      <span class="chip" data-status="skipped">Skipped</span>
+      <input type="search" id="searchBox" placeholder="Search title, subreddit, author…" />
+    </section>
+
+    <section class="cards" id="cards"></section>
+    <div class="empty" id="empty" hidden>No posts match these filters.</div>
+
+    <footer>
+      Data: <code>hits.json</code> · Regenerated by a Claude Code Routine ·
+      Source: <a href="https://github.com/jcpeters08/pxm-intercambio-scanner" id="repoLink">github.com/jcpeters08/pxm-intercambio-scanner</a>
+    </footer>
+  </main>
+
+  <script>
+    const state = { hits: [], platform: "all", status: "all", query: "" };
+
+    function fmtDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    }
+    function daysSince(iso) {
+      if (!iso) return Infinity;
+      return (Date.now() - new Date(iso).getTime()) / 86400000;
+    }
+    function esc(s) {
+      return String(s || "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+      }[c]));
+    }
+
+    function render() {
+      const filtered = state.hits.filter(h => {
+        if (state.platform !== "all" && h.platform !== state.platform) return false;
+        if (state.status !== "all" && h.status !== state.status) return false;
+        if (state.query) {
+          const q = state.query.toLowerCase();
+          const blob = `${h.title || ""} ${h.summary || ""} ${h.subreddit || ""} ${h.author || ""}`.toLowerCase();
+          if (!blob.includes(q)) return false;
+        }
+        return true;
+      });
+
+      const kpi = id => document.getElementById(id);
+      kpi("kpiTotal").textContent = state.hits.length;
+      kpi("kpiNew").textContent = state.hits.filter(h => daysSince(h.found_at || h.created_at) <= 7).length;
+      kpi("kpiDrafted").textContent = state.hits.filter(h => h.status === "drafted").length;
+      kpi("kpiReplied").textContent = state.hits.filter(h => h.status === "replied").length;
+      const count = plat => state.hits.filter(h => h.platform === plat).length;
+      kpi("kpiBreakdown").textContent = `${count("reddit")} / ${count("facebook")} / ${count("instagram")} / ${count("tiktok")}`;
+
+      const container = document.getElementById("cards");
+      const empty = document.getElementById("empty");
+      if (filtered.length === 0) {
+        container.innerHTML = "";
+        empty.hidden = false;
+        return;
+      }
+      empty.hidden = true;
+
+      container.innerHTML = filtered.map(h => `
+        <article class="card">
+          <header>
+            <span class="badge ${esc(h.platform)}">${esc(h.platform)}</span>
+            <span class="badge status-${esc(h.status)}">${esc(h.status)}</span>
+            ${h.subreddit ? `<span class="meta">r/${esc(h.subreddit)}</span>` : ""}
+            <span class="meta" style="margin-left:auto;">Posted ${fmtDate(h.created_at)}</span>
+          </header>
+          <h2><a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(h.title)}</a></h2>
+          <div class="meta">
+            ${h.author ? "u/" + esc(h.author) + " · " : ""}Found ${fmtDate(h.found_at)}
+            ${h.draft_id ? ` · Gmail draft: <code>${esc(h.draft_id)}</code>` : ""}
+          </div>
+          ${h.summary ? `<div class="summary">${esc(h.summary.slice(0, 280))}${h.summary.length > 280 ? "…" : ""}</div>` : ""}
+          ${h.notes ? `<div class="meta" style="margin-top:8px;">Notes: ${esc(h.notes)}</div>` : ""}
+        </article>
+      `).join("");
+    }
+
+    function wireFilters() {
+      document.querySelectorAll("#platformFilters .chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          document.querySelectorAll("#platformFilters .chip").forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          state.platform = chip.dataset.platform;
+          render();
+        });
+      });
+      document.querySelectorAll("#statusFilters .chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          document.querySelectorAll("#statusFilters .chip").forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          state.status = chip.dataset.status;
+          render();
+        });
+      });
+      document.getElementById("searchBox").addEventListener("input", e => {
+        state.query = e.target.value;
+        render();
+      });
+    }
+
+    async function load() {
+      try {
+        const res = await fetch("hits.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        state.hits = await res.json();
+        const latest = state.hits
+          .map(h => h.found_at)
+          .filter(Boolean)
+          .sort()
+          .pop();
+        document.getElementById("lastUpdated").textContent =
+          latest ? `Last scan: ${new Date(latest).toLocaleString()}` : "No scans yet";
+      } catch (e) {
+        document.getElementById("lastUpdated").textContent = `Error loading hits.json: ${e.message}`;
+        state.hits = [];
+      }
+      render();
+    }
+
+    wireFilters();
+    load();
+  </script>
+</body>
+</html>
